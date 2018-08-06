@@ -16,7 +16,7 @@ from iothub_client import IoTHubMessage, IoTHubMessageDispositionResult, IoTHubE
 # The device connection string to authenticate the device with your IoT hub.
 # Using the Azure CLI:
 # az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyNodeDevice --output table
-CONNECTION_STRING = "HostName=ElecHub.azure-devices.net;DeviceId=Meter_1;SharedAccessKey=fKhIaGaVltaNAcW/LRfpmPvGFwJaMmboKKw9wR6URDk="
+CONNECTION_STRING = "HostName=ElecHub.azure-devices.net;DeviceId=LineMonitor_1;SharedAccessKey=Gv5tRU6Hu26g24DGTBtsmKr2WQc5R2SWpxaF9C7ClsM="
 
 # Using the MQTT protocol.
 PROTOCOL = IoTHubTransportProvider.MQTT
@@ -34,7 +34,7 @@ FALSE_PROBALITY = [0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0]
 TRUE_PROBALITY = [1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1]
 
 
-MSG_TXT = "{\"supplyOn\": %r,\"fireAlert\": %r,\"equipementHeating\": %r,\"temperature\": %.2f}"
+MSG_TXT = "{\"supplyOn\": %r,\"fireAlert\": %r,\"temperature\": %.2f}"
 
 def send_confirmation_callback(message, result, user_context):
     print ( "IoT Hub responded to message with status: %s" % (result) )
@@ -58,12 +58,7 @@ def iothub_client_telemetry_sample_run():
             fireAlert = bool(FALSE_PROBALITY[false])
             temperature = random.random() * TEMEPERATURE
 
-            if temperature > 30:
-                equipementHeating = True
-            else:
-                equipementHeating = False
-
-            msg_txt_formatted = MSG_TXT % (supplyOn, fireAlert, equipementHeating, temperature)
+            msg_txt_formatted = MSG_TXT % (supplyOn, fireAlert, temperature)
             message = IoTHubMessage(msg_txt_formatted)
 
             # Add a custom application property to the message.
